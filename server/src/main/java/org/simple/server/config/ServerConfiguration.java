@@ -9,7 +9,7 @@ import org.springframework.core.codec.StringDecoder;
 @Configuration
 public class ServerConfiguration {
     @Bean
-    RSocketStrategiesCustomizer rSocketStrategiesCustomizer() {
+    public RSocketStrategiesCustomizer rSocketStrategiesCustomizer() {
         return strategies -> strategies
                 .metadataExtractorRegistry(registry -> {
                     registry.metadataToExtract(Constants.CUSTOM_HEADER_MIMETYPE, String.class, Constants.CUSTOM_HEADER);

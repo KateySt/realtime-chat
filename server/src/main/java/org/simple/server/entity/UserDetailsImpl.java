@@ -1,5 +1,7 @@
 package org.simple.server.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.simple.server.entity.enums.Role;
@@ -9,19 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserDetailsImpl implements UserDetails {
 
     private String username;
     private String password;
     private Role role;
-
-    public UserDetailsImpl(String username, String password, Role role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

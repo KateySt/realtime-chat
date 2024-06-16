@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>org.simple</groupId>
     <artifactId>chat</artifactId>
@@ -16,6 +16,10 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+    <modules>
+        <module>server</module>
+        <module>client</module>
+    </modules>
     <dependencies>
         <!--   <dependency>
                <groupId>org.springframework.boot</groupId>

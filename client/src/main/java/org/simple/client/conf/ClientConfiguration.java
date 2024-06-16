@@ -10,14 +10,9 @@ import org.springframework.security.rsocket.metadata.SimpleAuthenticationEncoder
 public class ClientConfiguration {
 
     @Bean
-    RSocketRequester rSocketRequester(RSocketRequester.Builder builder, RSocketMessageHandler handler) {
+    public RSocketRequester rSocketRequester(RSocketRequester.Builder builder, RSocketMessageHandler handler) {
         return builder
                 .rsocketStrategies(b -> b.encoder(new SimpleAuthenticationEncoder()))
-                /* NOTE: Authentication can be configured on connection setup as well
-                .setupRoute("connect")
-                .setupData("")
-                .setupMetadata(new UsernamePasswordMetadata("jay", "pw"), MimeTypeUtils.parseMimeType(WellKnownMimeType.MESSAGE_RSOCKET_AUTHENTICATION.getString()))
-                */
                 .rsocketConnector(connector -> connector.acceptor(handler.responder()))
                 .tcp("localhost", 8181);
     }

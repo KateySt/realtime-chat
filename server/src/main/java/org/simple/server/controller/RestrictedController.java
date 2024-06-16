@@ -1,5 +1,6 @@
 package org.simple.server.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.rsocket.annotation.ConnectMapping;
@@ -10,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 @Log4j2
 @Controller
+@RequiredArgsConstructor
 class RestrictedController {
 
     @ConnectMapping("connect")

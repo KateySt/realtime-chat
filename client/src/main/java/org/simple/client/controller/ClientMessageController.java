@@ -29,4 +29,16 @@ public class ClientMessageController {
                 .doOnNext(chs -> log.info("Sending status " + chs.getState()));
     }
 
+    @MessageMapping("health")
+    public Flux<ConditionFlag> health() {
+        var start = new Date().getTime();
+        var delay = Duration.ofSeconds(3).toMillis();
+        return Flux.fromStream(Stream.generate(() -> {
+                    var now = new Date().getTime();
+                    var stop = (start + delay) < now;
+                    return new ConditionFlag(stop ? ConditionFlag.STOPPED : ConditionFlag.STARTED);
+                }))
+                .delayElements(Duration.ofSeconds(1))
+                .doOnNext(chs -> log.info("Sending status " + chs.getState()));
+    }
 }

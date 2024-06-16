@@ -3,6 +3,7 @@ package org.simple.client.controller;
 import io.rsocket.metadata.WellKnownMimeType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.simple.client.service.ClientService;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.security.rsocket.metadata.UsernamePasswordMetadata;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 @Log4j2
 @RestController
@@ -50,6 +53,21 @@ public class ClientController {
                 .data(data)
                 .retrieveFlux(String.class)
                 .doOnNext(log::info);
+    }
+
+    @GetMapping("/channel-bidirectional")
+    public void sendBidirectional() {
+        /* NOTE: multiple clients can be configured with below
+        int max = Math.max(5, (int) (Math.random() * 10));
+         */
+        int max = 1;
+        log.info("Launching " + max + " clients");
+        Flux.fromStream(IntStream.range(0, max).boxed())
+                .delayElements(Duration.ofSeconds(1))
+                .map(id -> new ClientService(rSocketRequester, id.toString()))
+                .flatMap(ClientService::request)
+                .subscribeOn(Schedulers.boundedElastic())
+                .subscribe(log::info);
     }
 
     @GetMapping("/fire-forget")
